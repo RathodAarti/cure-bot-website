@@ -11,7 +11,8 @@ async function http(path, { method = 'POST', body, headers = {} } = {}) {
 }
 
 export async function sendChat({ text }) {
-  return http('/chat', { body: { text } })
+  // Backend exposes /ask (see backend/main.py)
+  return http('/ask', { body: { text } })
 }
 
 export async function sendVoice(payload) {
