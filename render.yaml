@@ -3,7 +3,7 @@ services:
     name: curebot-frontend
     env: static
     buildCommand: "npm ci && npm run build"
-    publishPath: "dist"
+    staticPublishPath: "dist"
     branch: main
     routes:
       - type: rewrite
