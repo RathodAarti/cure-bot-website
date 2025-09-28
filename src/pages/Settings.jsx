@@ -11,8 +11,10 @@ export default function Settings({ onClearMessages, onClearAll, onToggleSidebarD
     try { return !!JSON.parse(localStorage.getItem('curebot_ui') || '{}').notifications } catch { return true }
   })
   const [emergency, setEmergency] = useState(user?.emergency || '')
-  // Lock app to light theme
-  const [theme, setTheme] = useState('light')
+  // Theme: system | light | dark
+  const [theme, setTheme] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('curebot_theme') || '"system"') } catch { return 'system' }
+  })
 
   function saveLang(e) { const v = e.target.value; setLang(v); i18n.changeLanguage(v) }
   function saveEmergency() { updateUser({ emergency }) }
@@ -69,10 +71,10 @@ export default function Settings({ onClearMessages, onClearAll, onToggleSidebarD
 
   useEffect(() => { persistUI({ notifications: notify }) }, [notify])
   useEffect(() => {
-    // Always force light theme (remove any dark class)
-    const root = document.documentElement
-    root.classList.remove('dark')
-    persistUI({ theme: 'light' })
+    try {
+      localStorage.setItem('curebot_theme', JSON.stringify(theme))
+      window.dispatchEvent(new CustomEvent('curebot:theme', { detail: { mode: theme } }))
+    } catch {}
   }, [theme])
 
   async function exportMessages() {
@@ -116,15 +118,17 @@ export default function Settings({ onClearMessages, onClearAll, onToggleSidebarD
 
           <label className="grid gap-1">
             <span className="text-sm">Theme</span>
-            <select value={theme} onChange={()=>setTheme('light')} className="input !h-10">
-              <option value="light">Light (default)</option>
+            <select value={theme} onChange={(e)=>setTheme(e.target.value)} className="input !h-10">
+              <option value="system">System</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
             </select>
           </label>
 
           <div className="flex flex-wrap gap-2">
             <button className="btn !bg-white !text-gray-700 border border-gray-300 dark:!bg-[#232427] dark:!text-gray-100 dark:border-[#2E2F33]" onClick={onToggleSidebarDefault}>Toggle sidebar by default</button>
             <button className="btn !bg-white !text-gray-700 border border-gray-300 dark:!bg-[#232427] dark:!text-gray-100 dark:border-[#2E2F33]" onClick={onClearMessages}>Clear chat history</button>
-            <button className="btn !bg-rose-600" onClick={onClearAll}>Clear all data</button>
+            <button className="btn" onClick={onClearAll}>Clear all data</button>
           </div>
         </div>
       </div>
@@ -136,7 +140,7 @@ export default function Settings({ onClearMessages, onClearAll, onToggleSidebarD
           <button className="btn !bg-white !text-gray-700 border border-gray-300 dark:!bg-[#232427] dark:!text-gray-100 dark:border-[#2E2F33]" onClick={exportProfile}>Download profile (JSON)</button>
           <button className="btn !bg-white !text-gray-700 border border-gray-300 dark:!bg-[#232427] dark:!text-gray-100 dark:border-[#2E2F33]" onClick={requestNotifications}>Request notification permission</button>
           <button className="btn !bg-white !text-gray-700 border border-gray-300 dark:!bg-[#232427] dark:!text-gray-100 dark:border-[#2E2F33]" onClick={resetDefaults}>Reset to defaults</button>
-          <button className="btn !bg-rose-600" onClick={handleDeleteAccount}>Delete account (local)</button>
+          <button className="btn" onClick={handleDeleteAccount}>Delete account (local)</button>
         </div>
       </div>
     </div>

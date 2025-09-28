@@ -5,6 +5,8 @@
 :root { color-scheme: light; }
 
 html, body, #root { height: 100%; }
+/* Prevent horizontal overflow while keeping layout intact */
+html, body { overflow-x: hidden; }
 
 body {
   @apply text-gray-900 antialiased;
@@ -167,9 +169,9 @@ button, .btn, .btn-outline, .icon-btn, input, select, textarea { min-height: 44p
   padding-right: 1rem;
 }
 
-/* Optional right shift (manual, as requested) */
-.shift-right { position: relative; right: -150px; }
-@media (max-width: 767px) { .shift-right { right: 0; } }
+/* Optional right shift (manual, as requested). Use transform so it doesn't enlarge layout width */
+.shift-right { position: relative; transform: translateX(150px); }
+@media (max-width: 767px) { .shift-right { transform: none; } }
 
 /* Nudge only the bottom composer slightly to the right (desktop), keep centered on mobile */
 .composer-nudge { position: relative; left: 20px; }

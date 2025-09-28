@@ -11,6 +11,10 @@ export default function About() {
           information, and prepare for clinical care. CureBot does not replace a doctor; it complements your journey
           with timely, reliable guidance and accessible tools.
         </p>
+        {/* Disclaimer: dummy data notice */}
+        <div className="mt-4 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 text-sm p-3 dark:bg-[#1F1A0E] dark:text-amber-200 dark:border-amber-700">
+          Disclaimer: This site currently uses dummy/test data. Features and information are for demonstration only.
+        </div>
         <div className="mt-4 flex flex-wrap gap-2">
           <span className="px-3 py-1 rounded-full text-xs bg-emerald-100 text-emerald-800 border border-emerald-200">Privacy-first</span>
           <span className="px-3 py-1 rounded-full text-xs bg-sky-100 text-sky-800 border border-sky-200">24/7 guidance</span>
@@ -90,11 +94,6 @@ export default function About() {
               <a className="btn-outline !px-3 !py-1" href="mailto:alfajasif76@gmail.com">Email</a>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">Phone: <a className="text-sky-700 dark:text-sky-400 hover:underline" href="tel:9662051150">9662051150</a> · Email: <a className="text-sky-700 dark:text-sky-400 hover:underline" href="mailto:alfajasif76@gmail.com">alfajasif76@gmail.com</a></div>
-          </div>
-          <div className="rounded-xl border p-4 dark:bg-[#16181a] dark:border-[#2E2F33]">
-            <div className="font-medium">Office</div>
-            <div className="text-sm mt-1">We respond Mon–Sat, 10am–6pm IST</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">Average reply: under 24 hours</div>
           </div>
         </div>
       </section>

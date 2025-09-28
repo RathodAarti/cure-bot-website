@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-export default function Sidebar({ current, onNavigate, onCallClinician, onEmergency, onHide, language, onChangeLanguage, backend, onChangeBackend, channel, onChangeChannel }) {
+export default function Sidebar({ current, onNavigate, onCallClinician, onEmergency, onHide, language, onChangeLanguage, backend, onChangeBackend, channel, onChangeChannel, mobile = false, open = true }) {
   const { t } = useTranslation()
   const Icon = {
     chat: (props) => (
@@ -34,8 +34,12 @@ export default function Sidebar({ current, onNavigate, onCallClinician, onEmerge
     ) },
     { id: 'settings', label: t('nav_settings'), icon: Icon.settings },
   ]
+  const rootClass = mobile
+    ? `block md:hidden fixed left-0 top-0 w-64 max-w-[85vw] bg-white border-r border-[#CFE8D8] h-screen shadow-lg z-50 dark:bg-[#1A1B1E] dark:border-[#2E2F33] transform transition-transform duration-300 ease-out ${open ? 'translate-x-0' : '-translate-x-full'}`
+    : 'hidden md:block w-60 bg-white border-r border-[#CFE8D8] sticky top-0 self-start h-[100vh] shadow-sm dark:bg-[#1A1B1E] dark:border-[#2E2F33]'
+
   return (
-    <aside className="hidden md:block w-60 bg-white border-r border-[#CFE8D8] sticky top-0 self-start h-[100vh] shadow-sm dark:bg-[#1A1B1E] dark:border-[#2E2F33]">
+    <aside className={rootClass} role="navigation" aria-label="Sidebar">
       <div className="h-full flex flex-col">
         <div className="px-4 py-3 text-base font-semibold flex items-center justify-between">
           <span className="dark:text-white">{t('app_name')}</span>
@@ -52,7 +56,12 @@ export default function Sidebar({ current, onNavigate, onCallClinician, onEmerge
           </button>
         </div>
         <div className="border-t border-[#CFE8D8] dark:border-[#2E2F33]" />
-        <div className="flex-1 overflow-y-auto">
+        {/* Spacer to push utility links to the bottom */}
+        <div className="flex-1 overflow-y-auto" />
+
+        {/* Bottom utility links: Account, About, Settings */}
+        <div className="border-t border-[#CFE8D8] dark:border-[#2E2F33]" />
+        <div className="p-3">
           <nav className="py-2 text-sm">
             {items.map(it => (
               <button key={it.id} onClick={() => onNavigate(it.id)}
@@ -63,7 +72,6 @@ export default function Sidebar({ current, onNavigate, onCallClinician, onEmerge
             ))}
           </nav>
         </div>
-        {/* Bottom-left Quick Actions and Settings section removed as requested */}
       </div>
     </aside>
   )

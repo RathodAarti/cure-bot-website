@@ -40,6 +40,26 @@ export default function App() {
     } catch {}
   }, [sidebarOpen])
 
+  // Lock page scroll on chat view so the screen fits; allow scroll on other pages
+  useEffect(() => {
+    const root = document.documentElement
+    const body = document.body
+    const lock = started && page === 'chat'
+    const prevRoot = root.style.overflowY
+    const prevBody = body.style.overflowY
+    if (lock) {
+      root.style.overflowY = 'hidden'
+      body.style.overflowY = 'hidden'
+    } else {
+      root.style.overflowY = ''
+      body.style.overflowY = ''
+    }
+    return () => {
+      root.style.overflowY = prevRoot
+      body.style.overflowY = prevBody
+    }
+  }, [started, page])
+
   // When sidebar hides, show the floating tab briefly, then auto-hide. Re-show on edge hover.
   useEffect(() => {
     if (!sidebarOpen) {
@@ -128,7 +148,7 @@ export default function App() {
       >
         {/* controls moved to Sidebar */}
       </Topbar>
-      <div className="grid overflow-hidden min-h-0" style={{gridTemplateColumns: sidebarOpen ? '240px 1fr' : '1fr'}}>
+      <div className={`grid overflow-hidden min-h-0 ${sidebarOpen ? 'md:[grid-template-columns:240px_1fr]' : ''}`}>
         {sidebarOpen && (
           <Sidebar
             current={page}
@@ -145,11 +165,31 @@ export default function App() {
           />
         )}
         <main
-          className={`mx-auto max-w-[960px] w-full px-4 pt-4 pb-0 bg-white dark:bg-[#121212] ${page==='chat' ? 'overflow-hidden h-full' : 'overflow-auto'}`}
+          className={`mx-auto max-w-[960px] w-full px-4 pt-4 pb-0 bg-white dark:bg-[#121212] ${page==='chat' ? 'overflow-auto h-full' : 'overflow-auto'}`}
         >
           {renderMain()}
         </main>
       </div>
+      {/* Mobile overlay sidebar + backdrop */}
+      {sidebarOpen && (
+        <>
+          <div className="fixed inset-0 bg-black/30 md:hidden z-40" onClick={() => setSidebarOpen(false)} aria-hidden />
+          <Sidebar
+            mobile
+            current={page}
+            onNavigate={(id)=> { setPage(id); setSidebarOpen(false) }}
+            onCallClinician={handleCallClinician}
+            onEmergency={handleEmergency}
+            onHide={() => setSidebarOpen(false)}
+            language={i18n.language}
+            onChangeLanguage={(lng)=> i18n.changeLanguage(lng)}
+            backend={backend}
+            onChangeBackend={(b)=> setBackend(b)}
+            channel={channel}
+            onChangeChannel={(c)=> setChannel(c)}
+          />
+        </>
+      )}
       {!sidebarOpen && (
         <>
           {/* hover hotzone at far-left edge */}

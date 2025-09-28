@@ -13,10 +13,15 @@ export default function Topbar({ onLogin, onSignup, onLogout, onNavigate, onTogg
   const [notifOn, setNotifOn] = useState(() => {
     try { return !!JSON.parse(localStorage.getItem('curebot_ui') || '{}').notifications } catch { return true }
   })
+  const [themeMode, setThemeMode] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('curebot_theme') || '"system"') } catch { return 'system' }
+  })
   const [isDark, setIsDark] = useState(() => {
     try {
-      const theme = JSON.parse(localStorage.getItem('curebot_theme') || 'null')
-      return theme === 'dark'
+      const mode = JSON.parse(localStorage.getItem('curebot_theme') || '"system"')
+      if (mode === 'dark') return true
+      if (mode === 'light') return false
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
     } catch { return false }
   })
   const [notifOpen, setNotifOpen] = useState(false)
@@ -32,17 +37,34 @@ export default function Topbar({ onLogin, onSignup, onLogout, onNavigate, onTogg
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Apply theme on mount and when toggled
+  // React to system or explicit theme preference
   useEffect(() => {
     const root = document.documentElement
-    if (isDark) {
-      root.classList.add('dark')
-      localStorage.setItem('curebot_theme', JSON.stringify('dark'))
-    } else {
-      root.classList.remove('dark')
-      localStorage.setItem('curebot_theme', JSON.stringify('light'))
+    const apply = (dark) => {
+      if (dark) root.classList.add('dark'); else root.classList.remove('dark')
     }
-  }, [isDark])
+    if (themeMode === 'system') {
+      const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null
+      const update = () => setIsDark(!!mq?.matches)
+      update()
+      mq?.addEventListener?.('change', update)
+      apply(mq?.matches)
+      return () => mq?.removeEventListener?.('change', update)
+    } else {
+      apply(themeMode === 'dark')
+      setIsDark(themeMode === 'dark')
+    }
+  }, [themeMode])
+
+  // Listen for theme changes from Settings
+  useEffect(() => {
+    const onTheme = (e) => {
+      const mode = e?.detail?.mode || 'system'
+      setThemeMode(mode)
+    }
+    window.addEventListener('curebot:theme', onTheme)
+    return () => window.removeEventListener('curebot:theme', onTheme)
+  }, [])
 
   useEffect(() => {
     const onAuth = (e) => {
@@ -125,8 +147,20 @@ export default function Topbar({ onLogin, onSignup, onLogout, onNavigate, onTogg
     <div className={`sticky top-0 z-30 backdrop-blur border-b ${scrolled ? 'shadow-md' : 'shadow-sm'} bg-white border-[#CFE8D8] dark:bg-[#1A1B1E] dark:border-[#2E2F33]`}>
       <div className="px-4 py-3 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <span aria-hidden className="w-[60px] h-[60px] rounded-full bg-emerald-100 flex items-center justify-center border border-[#CFE8D8]"><Logo size={44} /></span>
-          <span className="font-semibold text-2xl dark:text-white truncate max-w-[50vw] sm:max-w-none">{t('app_name')}</span>
+          {/* Mobile hamburger to toggle sidebar */}
+          <button
+            type="button"
+            className="md:hidden icon-btn !w-10 !h-10 !p-0"
+            aria-label="Open menu"
+            title="Menu"
+            onClick={onToggleSidebar}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M3 6h18M3 12h18M3 18h18" />
+            </svg>
+          </button>
+          <span aria-hidden className="w-10 h-10 md:w-[60px] md:h-[60px] rounded-full bg-emerald-100 flex items-center justify-center border border-[#CFE8D8]"><Logo size={28} /></span>
+          <span className="font-semibold text-xl md:text-2xl dark:text-white truncate max-w-[50vw] sm:max-w-none">{t('app_name')}</span>
         </div>
         <div className="flex-1"/>
         <div className="flex items-center gap-2 flex-wrap justify-end">
@@ -154,7 +188,14 @@ export default function Topbar({ onLogin, onSignup, onLogout, onNavigate, onTogg
               className="btn-outline ml-2 !px-3"
               aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               title={isDark ? 'Light mode' : 'Dark mode'}
-              onClick={() => setIsDark(v => !v)}
+              onClick={() => {
+                const nextDark = !isDark
+                setThemeMode(nextDark ? 'dark' : 'light')
+                try {
+                  localStorage.setItem('curebot_theme', JSON.stringify(nextDark ? 'dark' : 'light'))
+                  window.dispatchEvent(new CustomEvent('curebot:theme', { detail: { mode: nextDark ? 'dark' : 'light' } }))
+                } catch {}
+              }}
             >
               {isDark ? (
                 // Moon icon
@@ -207,8 +248,8 @@ export default function Topbar({ onLogin, onSignup, onLogout, onNavigate, onTogg
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <button className="btn-outline min-w-[130px] flex items-center justify-center" onClick={onLogin}>{t('login')}</button>
-              <button className="btn min-w-[130px] flex items-center justify-center" onClick={onSignup}>{t('signup')}</button>
+              <button className="btn-outline min-w-[110px] md:min-w-[130px] flex items-center justify-center" onClick={onLogin}>{t('login')}</button>
+              <button className="btn min-w-[110px] md:min-w-[130px] flex items-center justify-center" onClick={onSignup}>{t('signup')}</button>
             </div>
           )}
         </div>
