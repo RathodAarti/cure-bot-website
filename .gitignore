@@ -32,3 +32,18 @@ pnpm-debug.log*
 # OS
 *.log
 
+# Backend (Python)
+backend/venv/
+backend/env/
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.ruff_cache/
+backend/.DS_Store
+backend/*.pyc
+backend/**/*.pyc
+backend/uploads/
+backend/.env
+backend/.env.*
