@@ -1,8 +1,10 @@
+# Render blueprint v3 – sync bump
 services:
-  - type: static_site
+  - type: web
     name: curebot-frontend
+    env: static
     buildCommand: "npm ci && npm run build"
-    publishPath: "dist"
+    staticPublishPath: "dist"
     branch: main
     routes:
       - type: rewrite
