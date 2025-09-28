@@ -1,0 +1,23 @@
+{
+  "language": "Language",
+  "connection": "Connection",
+  "disclaimer": "CureBot is not a substitute for professional medical advice. If you need urgent help, contact a clinician.",
+  "chat_with_curebot": "Chat with CureBot",
+  "your_message": "Your message",
+  "placeholder": "Type your question in simple words...",
+  "send": "Send",
+  "voice_input": "Voice input",
+  "voice": "Voice",
+  "stop": "Stop",
+  "thinking": "Thinking...",
+  "call_clinician": "Call a clinician",
+  "sources": "Sources",
+  "feedback": "Feedback",
+  "thumbs_up": "Thumbs up",
+  "thumbs_down": "Thumbs down",
+  "thanks": "Thanks!",
+  "error_generic": "Something went wrong. Please try again.",
+  "need_help_msg": "The user needs help from a clinician.",
+  "whatsapp_sent": "We have notified a clinician via WhatsApp.",
+  "whatsapp_failed": "Failed to send WhatsApp message."
+}
