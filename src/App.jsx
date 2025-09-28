@@ -148,7 +148,7 @@ export default function App() {
       >
         {/* controls moved to Sidebar */}
       </Topbar>
-      <div className={`grid overflow-hidden min-h-0 ${sidebarOpen ? 'md:[grid-template-columns:240px_1fr]' : ''}`}>
+      <div className={`grid min-h-0 ${sidebarOpen ? 'md:[grid-template-columns:240px_1fr]' : ''}`}>
         {sidebarOpen && (
           <Sidebar
             current={page}
