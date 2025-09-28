@@ -1,9 +1,8 @@
 services:
-  - type: web
+  - type: static_site
     name: curebot-frontend
-    env: static
     buildCommand: "npm ci && npm run build"
-    staticPublishPath: "dist"
+    publishPath: "dist"
     branch: main
     routes:
       - type: rewrite
