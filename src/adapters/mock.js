@@ -81,6 +81,48 @@ export async function sendChat({ text }) {
         'For sore throat: warm saline gargles, warm fluids, lozenges (if suitable), and rest. Seek care if high fever, drooling, severe pain, or breathing difficulty.'
       ]
     },
+    // Added: vomiting
+    {
+      test: /(vomit|vomiting|nausea|throwing\s*up)/,
+      reply: [
+        'For vomiting: take small sips of water/ORS frequently, avoid solid/spicy food for a few hours, try bland food (banana, rice, toast) once better. Seek care urgently if you can’t keep fluids down for >6–8 hours, there is blood in vomit, severe belly pain, very drowsy, or signs of dehydration (dry mouth, very low urine).'
+      ]
+    },
+    // Added: malaria
+    {
+      test: /(malaria|malarial)/,
+      reply: [
+        'Malaria symptoms can include fever with chills/sweats, headache, body aches, and fatigue. Seek testing at a clinic as soon as possible—effective treatment requires lab confirmation. Meanwhile, rest, hydrate, and use mosquito protection.'
+      ]
+    },
+    // Added: dengue
+    {
+      test: /(dengue)/,
+      reply: [
+        'Dengue symptoms can include high fever, severe headache, pain behind eyes, muscle/joint pain, rash, and nausea. Avoid ibuprofen/aspirin; you may use paracetamol if suitable. Hydrate well and seek medical evaluation—warning signs include bleeding, severe abdominal pain, persistent vomiting, or lethargy.'
+      ]
+    },
+    // Added: injury / first aid
+    {
+      test: /(injur|wound|cut|bleed)/,
+      reply: [
+        'First aid: apply gentle pressure with a clean cloth to stop bleeding, clean with running water, and cover with a sterile dressing. For deep/dirty wounds, severe bleeding, suspected fracture, or head injury, seek urgent care. Update tetanus shot if needed.'
+      ]
+    },
+    // Added: dehydration
+    {
+      test: /(dehydration|dehydrated|very\s*thirsty|dry\s*mouth)/,
+      reply: [
+        'Signs of dehydration: very thirsty, dry mouth, dark/low urine, dizziness. Take ORS or water frequently, add light meals. Seek care if unable to keep fluids, very little urine for >8 hours, or confusion/drowsiness.'
+      ]
+    },
+    // Added: food poisoning / stomach flu
+    {
+      test: /(food\s*poison|stomach\s*flu|gastroenteritis)/,
+      reply: [
+        'For suspected food poisoning/stomach flu: ORS after each loose stool, rest, and bland food (rice, banana, toast). Avoid dairy/oily food. Seek care if high fever, blood in stool, severe pain, or dehydration.'
+      ]
+    },
     {
       test: /(diarrhea|loose\s*motions)/,
       reply: [

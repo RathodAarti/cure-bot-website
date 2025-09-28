@@ -101,6 +101,15 @@ export default function ChatBox({ channel = 'http' }) {
     'I have chest pain',
     'I have skin rash',
     'I have sore throat',
+    // Added common medical topics
+    'I have vomiting',
+    'Symptoms of malaria',
+    'Symptoms of dengue',
+    'I am injured, first aid steps',
+    'Dehydration signs and what to do',
+    'Food poisoning symptoms and care',
+    'Stomach flu home care',
+    'Fever management and when to see a doctor',
   ], [])
 
   function updateTypeahead(val) {
@@ -114,6 +123,8 @@ export default function ChatBox({ channel = 'http' }) {
 
   return (
     <section aria-label={t('chat_with_curebot')} className="grid gap-4 bg-white dark:bg-transparent">
+      {/* Dedicated scroll area to ensure scrollbar is always available */}
+      <div className="chat-scroll-container overflow-y-auto max-h-[calc(100vh-140px)] md:max-h-[calc(100vh-160px)] pr-1">
       <div className="chat-column left-align w-full">
       {!hasUserMessage && (
         <div className="card w-full p-3 flex items-center gap-3 sticky top-0 bg-white z-10 dark:bg-[#1A1B1E] dark:border-[#2E2F33] mb-3">
@@ -214,7 +225,8 @@ export default function ChatBox({ channel = 'http' }) {
       )}
 
       {/* spacer so content isn't hidden behind fixed composer */}
-      <div aria-hidden className="h-20" />
+      <div aria-hidden className="h-24" />
+      </div>
       </div>
       <form onSubmit={handleSend} className="fixed bottom-2 left-0 right-0 bg-transparent p-0 m-0 z-30">
         <div className="chat-column shift-right">

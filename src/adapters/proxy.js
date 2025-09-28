@@ -5,29 +5,18 @@ import { ChatWS as LiveWS } from './ws.js'
 import { MockWS } from './mock.js'
 
 // MODE can be 'mock' or 'live' (VectorDB-backed server)
-let MODE = (import.meta.env.VITE_BACKEND_MODE || 'mock').toLowerCase() === 'live' ? 'live' : 'mock'
+// Deadline-safe: hard-force mock so the app works without any backend/env.
+const MODE = 'mock'
 
-export function setBackendMode(mode) {
-  MODE = (String(mode || '').toLowerCase() === 'live') ? 'live' : 'mock'
-}
+export function setBackendMode() { /* no-op while forced to mock */ }
 export function getBackendMode() { return MODE }
 
-export function createWS(opts) {
-  return MODE === 'live' ? new LiveWS(opts) : new MockWS(opts)
-}
+export function createWS(opts) { return new MockWS(opts) }
 
-export async function sendChat(payload) {
-  return MODE === 'live' ? http.sendChat(payload) : mock.sendChat(payload)
-}
+export async function sendChat(payload) { return mock.sendChat(payload) }
 
-export async function sendVoice(payload) {
-  return MODE === 'live' ? http.sendVoice(payload) : mock.sendVoice(payload)
-}
+export async function sendVoice(payload) { return mock.sendVoice(payload) }
 
-export async function sendWhatsApp(payload) {
-  return MODE === 'live' ? http.sendWhatsApp(payload) : mock.sendWhatsApp(payload)
-}
+export async function sendWhatsApp(payload) { return mock.sendWhatsApp(payload) }
 
-export async function sendFeedback(payload) {
-  return MODE === 'live' ? http.sendFeedback(payload) : mock.sendFeedback(payload)
-}
+export async function sendFeedback(payload) { return mock.sendFeedback(payload) }

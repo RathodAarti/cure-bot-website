@@ -165,7 +165,7 @@ export default function Topbar({ onLogin, onSignup, onLogout, onNavigate, onTogg
         <div className="flex-1"/>
         <div className="flex items-center gap-2 flex-wrap justify-end">
           {children}
-          <div className="relative">
+          <div className="relative hidden sm:block">
             <button ref={notifBtnRef} type="button" className="btn-outline" aria-label={t('notifications')} title={notifOn ? 'Notifications on' : 'Notifications muted'} onClick={() => setNotifOpen(v=>!v)}>
               {notifOn ? (
                 // Bell ON
@@ -185,7 +185,7 @@ export default function Topbar({ onLogin, onSignup, onLogout, onNavigate, onTogg
             {/* Theme toggle */}
             <button
               type="button"
-              className="btn-outline ml-2 !px-3"
+              className="btn-outline ml-2 !px-3 hidden sm:inline-flex"
               aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               title={isDark ? 'Light mode' : 'Dark mode'}
               onClick={() => {
@@ -248,8 +248,8 @@ export default function Topbar({ onLogin, onSignup, onLogout, onNavigate, onTogg
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <button className="btn-outline min-w-[110px] md:min-w-[130px] flex items-center justify-center" onClick={onLogin}>{t('login')}</button>
-              <button className="btn min-w-[110px] md:min-w-[130px] flex items-center justify-center" onClick={onSignup}>{t('signup')}</button>
+              <button className="btn-outline min-w-[100px] md:min-w-[130px] !px-4 !py-2 text-sm md:!px-5 md:!py-3 md:text-base flex items-center justify-center" onClick={onLogin}>{t('login')}</button>
+              <button className="btn min-w-[100px] md:min-w-[130px] !px-4 !py-2 text-sm md:!px-5 md:!py-3 md:text-base flex items-center justify-center" onClick={onSignup}>{t('signup')}</button>
             </div>
           )}
         </div>
