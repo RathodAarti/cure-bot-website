@@ -124,12 +124,12 @@ export default function Topbar({ onLogin, onSignup, onLogout, onNavigate, onTogg
   return (
     <div className={`sticky top-0 z-30 backdrop-blur border-b ${scrolled ? 'shadow-md' : 'shadow-sm'} bg-white border-[#CFE8D8] dark:bg-[#1A1B1E] dark:border-[#2E2F33]`}>
       <div className="px-4 py-3 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0">
           <span aria-hidden className="w-[60px] h-[60px] rounded-full bg-emerald-100 flex items-center justify-center border border-[#CFE8D8]"><Logo size={44} /></span>
-          <span className="font-semibold text-2xl dark:text-white">{t('app_name')}</span>
+          <span className="font-semibold text-2xl dark:text-white truncate max-w-[50vw] sm:max-w-none">{t('app_name')}</span>
         </div>
         <div className="flex-1"/>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap justify-end">
           {children}
           <div className="relative">
             <button ref={notifBtnRef} type="button" className="btn-outline" aria-label={t('notifications')} title={notifOn ? 'Notifications on' : 'Notifications muted'} onClick={() => setNotifOpen(v=>!v)}>
@@ -156,7 +156,18 @@ export default function Topbar({ onLogin, onSignup, onLogout, onNavigate, onTogg
               title={isDark ? 'Light mode' : 'Dark mode'}
               onClick={() => setIsDark(v => !v)}
             >
-              {isDark ? '🌙' : '🌞'}
+              {isDark ? (
+                // Moon icon
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              ) : (
+                // Sun icon
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <circle cx="12" cy="12" r="5" />
+                  <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                </svg>
+              )}
             </button>
             {notifOpen && (
               <div className="absolute right-0 mt-2 w-80 max-w-[90vw] bg-white border border-[#CFE8D8] rounded-md shadow-lg overflow-hidden dark:bg-[#1A1B1E] dark:border-[#2E2F33]">

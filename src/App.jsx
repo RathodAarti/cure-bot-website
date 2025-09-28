@@ -128,7 +128,7 @@ export default function App() {
       >
         {/* controls moved to Sidebar */}
       </Topbar>
-      <div className="grid" style={{gridTemplateColumns: sidebarOpen ? '240px 1fr' : '1fr'}}>
+      <div className="grid overflow-hidden min-h-0" style={{gridTemplateColumns: sidebarOpen ? '240px 1fr' : '1fr'}}>
         {sidebarOpen && (
           <Sidebar
             current={page}
@@ -144,7 +144,9 @@ export default function App() {
             onChangeChannel={(c)=> setChannel(c)}
           />
         )}
-        <main className="mx-auto max-w-[960px] w-full px-4 pt-4 pb-0 bg-white dark:bg-[#121212]">
+        <main
+          className={`mx-auto max-w-[960px] w-full px-4 pt-4 pb-0 bg-white dark:bg-[#121212] ${page==='chat' ? 'overflow-hidden h-full' : 'overflow-auto'}`}
+        >
           {renderMain()}
         </main>
       </div>
@@ -181,11 +183,13 @@ export default function App() {
           </button>
         </>
       )}
-      <footer className="bg-white border-t border-[#CFE8D8] dark:bg-[#121212] dark:border-[#2E2F33]">
-        <div className="mx-auto max-w-6xl p-4 text-sm text-gray-600 dark:text-gray-400">
-          {t('disclaimer')}
-        </div>
-      </footer>
+      {page !== 'chat' && (
+        <footer className="bg-white border-t border-[#CFE8D8] dark:bg-[#121212] dark:border-[#2E2F33]">
+          <div className="mx-auto max-w-6xl p-4 text-sm text-gray-600 dark:text-gray-400 text-center">
+            {t('disclaimer')}
+          </div>
+        </footer>
+      )}
     </div>
   )
 }

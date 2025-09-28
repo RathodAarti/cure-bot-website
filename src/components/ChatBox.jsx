@@ -114,7 +114,7 @@ export default function ChatBox({ channel = 'http' }) {
 
   return (
     <section aria-label={t('chat_with_curebot')} className="grid gap-4 bg-white dark:bg-transparent">
-      <div className="max-w-[960px] mx-auto px-4 w-full">
+      <div className="chat-column left-align w-full">
       {!hasUserMessage && (
         <div className="card w-full p-3 flex items-center gap-3 sticky top-0 bg-white z-10 dark:bg-[#1A1B1E] dark:border-[#2E2F33] mb-3">
           <div aria-hidden className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -126,7 +126,7 @@ export default function ChatBox({ channel = 'http' }) {
           </div>
         </div>
       )}
-      <ul ref={listRef} className="flex flex-col gap-2" aria-live="polite">
+      <ul ref={listRef} className="flex flex-col gap-1.5 md:gap-2" aria-live="polite">
         {messages.map((m, idx) => {
           const prev = messages[idx - 1]
           const next = messages[idx + 1]
@@ -140,15 +140,15 @@ export default function ChatBox({ channel = 'http' }) {
             : `${groupedWithPrev ? 'rounded-tl-md' : 'rounded-tl-2xl'} ${groupedWithNext ? 'rounded-bl-md' : 'rounded-bl-2xl'} rounded-tr-2xl rounded-br-2xl`
           return (
             <li key={m.id} className="w-full" style={{animation: 'fadeInUp .18s ease-out'}}>
-              <div className={`flex items-end gap-2 ${isUser ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex items-end gap-2 md:gap-2 ${isUser ? 'flex-row-reverse' : ''}`}>
                 {showAvatar ? (
-                  <div aria-hidden className={`w-9 h-9 rounded-full shadow ${isUser ? 'bg-emerald-200 dark:bg-[#232427]' : 'bg-emerald-100 dark:bg-[#232427]'} flex items-center justify-center shrink-0`}>
+                  <div aria-hidden className={`w-8 h-8 md:w-9 md:h-9 rounded-full shadow ${isUser ? 'bg-emerald-200 dark:bg-[#232427]' : 'bg-emerald-100 dark:bg-[#232427]'} flex items-center justify-center shrink-0`}>
                     {isUser ? '🧑' : <Logo size={22} />}
                   </div>
                 ) : (
                   <div className="w-9 shrink-0" />
                 )}
-                <div className={`max-w-[68%] ${isUser ? 'self-end text-gray-900 dark:text-white' : 'self-start text-gray-900 dark:text-gray-100'}`}>
+                <div className={`max-w-full md:max-w-[68%] ${isUser ? 'self-end text-gray-900 dark:text-white' : 'self-start text-gray-900 dark:text-gray-100'}`}>
                   <div className={`relative ${radius} border ${isUser ? 'bg-white border-[#CFE8D8] dark:bg-[#232427] dark:border-[#2E2F33]' : 'bg-white border-[#CFE8D8] dark:bg-[#232427] dark:border-[#2E2F33]'} px-3 py-1.5` }>
                     {!isUser && showTail && (
                       <svg width="10" height="12" className="absolute -left-2 bottom-2" viewBox="0 0 10 12" fill="none" aria-hidden>
@@ -160,7 +160,7 @@ export default function ChatBox({ channel = 'http' }) {
                         <path d="M0 0 L10 6 L0 12" fill="currentColor" className="text-white dark:text-[#232427]"/>
                       </svg>
                     )}
-                    <p className="whitespace-pre-wrap leading-relaxed text-[15px]">{m.content}</p>
+                    <p className="whitespace-pre-wrap leading-relaxed text-[14px] md:text-[15px]">{m.content}</p>
                   </div>
                   {m.role === 'assistant' && (
                     <div className="mt-2 grid gap-2">
@@ -168,7 +168,7 @@ export default function ChatBox({ channel = 'http' }) {
                     </div>
                   )}
                   {/* timestamp under each message */}
-                  <div className={`mt-1 text-[11px] text-gray-500 dark:text-gray-400 ${isUser ? 'text-right' : ''}`}>
+                  <div className={`mt-1 text-[10px] md:text-[11px] text-gray-500 dark:text-gray-400 ${isUser ? 'text-right' : ''}`}>
                     {new Date(m.ts || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
@@ -182,7 +182,7 @@ export default function ChatBox({ channel = 'http' }) {
               <div aria-hidden className="w-9 h-9 rounded-full shadow bg-emerald-100 flex items-center justify-center shrink-0">
                 <Logo size={22} />
               </div>
-              <div className="max-w-[68%] self-start text-gray-900">
+              <div className="max-w-full md:max-w-[68%] self-start text-gray-900">
                 <div className="relative rounded-2xl border bg-white border-[#CFE8D8] dark:bg-[#232427] dark:border-[#2E2F33] dark:text-gray-100 px-3 py-1.5">
                   <svg width="10" height="12" className="absolute -left-2 top-3" viewBox="0 0 10 12" fill="none" aria-hidden>
                     <path d="M10 0 L0 6 L10 12" fill="currentColor" className="text-white dark:text-[#232427]"/>
@@ -217,7 +217,7 @@ export default function ChatBox({ channel = 'http' }) {
       <div aria-hidden className="h-20" />
       </div>
       <form onSubmit={handleSend} className="fixed bottom-2 left-0 right-0 bg-transparent p-0 m-0 z-30">
-        <div className="max-w-[960px] mx-auto px-4">
+        <div className="chat-column shift-right">
         <div className="w-full rounded-full bg-white border border-[#CFE8D8] shadow-sm flex items-center gap-2 px-3 py-3 dark:bg-black dark:border-[#2E2F33] dark:text-gray-100">
           {/* attach buttons */}
           <input ref={imgRef} type="file" accept="image/*" className="hidden" onChange={(e) => {

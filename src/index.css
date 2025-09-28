@@ -120,9 +120,64 @@ body {
 }
 .dark .icon-btn:hover { background-color: #0B0B0C; }
 .dark .icon-btn:focus-visible { box-shadow: 0 0 0 2px #065f46; }
-
-/* Center chat placeholder text when empty */
+/* Left-align chat placeholder/input when empty */
 #message:placeholder-shown {
-  text-align: center;
+  text-align: left;
 }
 
+
+/* ---------- Responsive/mobile helpers ---------- */
+/* Images and media shrink in small screens */
+img, video, canvas { max-width: 100%; height: auto; }
+
+/* Prevent layout breaking due to long content */
+.break-any { overflow-wrap: anywhere; word-break: break-word; }
+
+/* Make tables scroll horizontally on mobile */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Touch-friendly min tap sizes */
+button, .btn, .btn-outline, .icon-btn, input, select, textarea { min-height: 44px; }
+
+/* Reduce paddings/rounding on very small screens */
+@media (max-width: 640px) {
+  .btn, .btn-outline { padding-left: 14px; padding-right: 14px; padding-top: 10px; padding-bottom: 10px; }
+  .input { padding-left: 14px; padding-right: 14px; padding-top: 10px; padding-bottom: 10px; }
+  .card { border-radius: 18px; }
+  body { padding-left: 10px; padding-right: 10px; }
+}
+
+/* Disable hover lift on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .card:hover { transform: none; }
+}
+
+/* Respect iOS safe areas */
+@supports (padding: max(0px)) {
+  body { padding-bottom: max(0px, env(safe-area-inset-bottom)); }
+}
+
+/* Consistent chat column width and padding */
+.chat-column {
+  max-width: 960px;
+  width: 100%;
+  margin-left: auto;  /* center */
+  margin-right: auto;
+  padding-left: 1rem; /* same as px-4 */
+  padding-right: 1rem;
+}
+
+/* Optional right shift (manual, as requested) */
+.shift-right { position: relative; right: -150px; }
+@media (max-width: 767px) { .shift-right { right: 0; } }
+
+/* Nudge only the bottom composer slightly to the right (desktop), keep centered on mobile */
+.composer-nudge { position: relative; left: 20px; }
+@media (max-width: 767px) { .composer-nudge { left: 0; } }
+
+/* Left-align a chat-column (override centering) */
+.left-align { margin-left: 0 !important; margin-right: auto !important; }
+
+/* Optional left shift (manual, as requested) */
+.left-shift { position: relative; left: -85px; }
+@media (max-width: 767px) { .left-shift { left: 0; } }

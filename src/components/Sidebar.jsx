@@ -51,18 +51,18 @@ export default function Sidebar({ current, onNavigate, onCallClinician, onEmerge
             + {t('new_chat')}
           </button>
         </div>
-        {/* push the rest to the bottom */}
-        <div className="flex-1" />
         <div className="border-t border-[#CFE8D8] dark:border-[#2E2F33]" />
-        <nav className="overflow-auto py-2 text-sm">
-          {items.map(it => (
-            <button key={it.id} onClick={() => onNavigate(it.id)}
-              className={`w-full text-left px-4 py-2 rounded-md hover:bg-white focus:bg-white focus:outline-none dark:hover:bg-[#232427] dark:focus:bg-[#232427] dark:text-gray-100 ${current === it.id ? 'bg-white dark:bg-[#232427] font-semibold' : ''}`}
-              aria-current={current === it.id ? 'page' : undefined}>
-              <span className="mr-2 inline-flex items-center text-gray-700 dark:text-gray-100" aria-hidden>{typeof it.icon === 'function' ? it.icon({}) : it.icon}</span>{it.label}
-            </button>
-          ))}
-        </nav>
+        <div className="flex-1 overflow-y-auto">
+          <nav className="py-2 text-sm">
+            {items.map(it => (
+              <button key={it.id} onClick={() => onNavigate(it.id)}
+                className={`w-full text-left px-4 py-2 rounded-md hover:bg-white focus:bg-white focus:outline-none dark:hover:bg-[#232427] dark:focus:bg-[#232427] dark:text-gray-100 ${current === it.id ? 'bg-white dark:bg-[#232427] font-semibold' : ''}`}
+                aria-current={current === it.id ? 'page' : undefined}>
+                <span className="mr-2 inline-flex items-center text-gray-700 dark:text-gray-100" aria-hidden>{typeof it.icon === 'function' ? it.icon({}) : it.icon}</span>{it.label}
+              </button>
+            ))}
+          </nav>
+        </div>
         {/* Bottom-left Quick Actions and Settings section removed as requested */}
       </div>
     </aside>
