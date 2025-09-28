@@ -12,3 +12,23 @@ services:
     buildFilter:
       paths:
         - "**/*"
+
+  - type: web
+    name: curebot-backend
+    env: python
+    rootDir: backend
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    autoDeploy: true
+    envVars:
+      - key: LLM_PROVIDER
+        value: ollama
+      - key: LLM_MODEL
+        value: tinylama:latest
+      # If Ollama is reachable externally, set its URL; otherwise configure appropriately
+      - key: OLLAMA_HOST
+        value: http://host.docker.internal:11434
+      # Optional CORS: set to your frontend domain when available
+      - key: ALLOWED_ORIGINS
+        value: "*"
