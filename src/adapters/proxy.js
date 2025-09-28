@@ -4,19 +4,30 @@ import * as mock from './mock.js'
 import { ChatWS as LiveWS } from './ws.js'
 import { MockWS } from './mock.js'
 
-// Force MOCK mode only
-let MODE = 'mock' // 'mock' only
+// MODE can be 'mock' or 'live' (VectorDB-backed server)
+let MODE = (import.meta.env.VITE_BACKEND_MODE || 'mock').toLowerCase() === 'live' ? 'live' : 'mock'
 
-// Keep API, but lock to mock. Any call will remain mock.
-export function setBackendMode() { MODE = 'mock' }
-export function getBackendMode() { return 'mock' }
+export function setBackendMode(mode) {
+  MODE = (String(mode || '').toLowerCase() === 'live') ? 'live' : 'mock'
+}
+export function getBackendMode() { return MODE }
 
-export function createWS(opts) { return new MockWS(opts) }
+export function createWS(opts) {
+  return MODE === 'live' ? new LiveWS(opts) : new MockWS(opts)
+}
 
-export async function sendChat(payload) { return mock.sendChat(payload) }
+export async function sendChat(payload) {
+  return MODE === 'live' ? http.sendChat(payload) : mock.sendChat(payload)
+}
 
-export async function sendVoice(payload) { return mock.sendVoice(payload) }
+export async function sendVoice(payload) {
+  return MODE === 'live' ? http.sendVoice(payload) : mock.sendVoice(payload)
+}
 
-export async function sendWhatsApp(payload) { return mock.sendWhatsApp(payload) }
+export async function sendWhatsApp(payload) {
+  return MODE === 'live' ? http.sendWhatsApp(payload) : mock.sendWhatsApp(payload)
+}
 
-export async function sendFeedback(payload) { return mock.sendFeedback(payload) }
+export async function sendFeedback(payload) {
+  return MODE === 'live' ? http.sendFeedback(payload) : mock.sendFeedback(payload)
+}
